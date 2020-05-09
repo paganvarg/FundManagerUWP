@@ -1,0 +1,43 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FundManagerUWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:telerik="using:Telerik.UI.Xaml.Controls.Chart"
+    xmlns:telerikcharting="using:Telerik.Charting"
+    x:Class="FundManagerUWP.MainPage"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <SplitView DisplayMode="CompactInline" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <SplitView.Pane>
+            <ListBox Name="IconsLIstBox" SelectionMode="Single">
+                <ListBoxItem Name="HomeListItem">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" Text="&#xE700;"/>
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+        </SplitView.Pane>
+        <telerik:RadCartesianChart HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <telerik:RadCartesianChart.HorizontalAxis>
+                <telerik:CategoricalAxis/>
+            </telerik:RadCartesianChart.HorizontalAxis>
+            <telerik:RadCartesianChart.VerticalAxis>
+                <telerik:LinearAxis/>
+            </telerik:RadCartesianChart.VerticalAxis>
+            <telerik:RadCartesianChart.Series>
+                <telerik:CandlestickSeries>
+                    <telerik:CandlestickSeries.DataPoints>
+                        <telerikcharting:OhlcDataPoint Category="Monday" Open="5" Close="4" Low="2" High="10" />
+                        <telerikcharting:OhlcDataPoint Category="Tuesday" Open="10" Close="8" Low="7" High="12"/>
+                        <telerikcharting:OhlcDataPoint Category="Wednesday" Open="6" Close="8" Low="5" High="9"/>
+                        <telerikcharting:OhlcDataPoint Category="Thursday" Open="3" Close="7" Low="3" High="8"/>
+                        <telerikcharting:OhlcDataPoint Category="Friday" Open="5" Close="6" Low="4" High="7"/>
+                    </telerik:CandlestickSeries.DataPoints>
+                </telerik:CandlestickSeries>
+            </telerik:RadCartesianChart.Series>
+        </telerik:RadCartesianChart>
+
+    </SplitView>
+</Page>
