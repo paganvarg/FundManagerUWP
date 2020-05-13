@@ -9,35 +9,36 @@
     x:Class="FundManagerUWP.MainPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-    <SplitView DisplayMode="CompactInline" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-        <SplitView.Pane>
-            <ListBox Name="IconsLIstBox" SelectionMode="Single">
-                <ListBoxItem Name="HomeListItem">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="24" Text="&#xE700;"/>
-                    </StackPanel>
-                </ListBoxItem>
-            </ListBox>
-        </SplitView.Pane>
-        <telerik:RadCartesianChart HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <telerik:RadCartesianChart.HorizontalAxis>
-                <telerik:CategoricalAxis/>
-            </telerik:RadCartesianChart.HorizontalAxis>
-            <telerik:RadCartesianChart.VerticalAxis>
-                <telerik:LinearAxis/>
-            </telerik:RadCartesianChart.VerticalAxis>
-            <telerik:RadCartesianChart.Series>
-                <telerik:CandlestickSeries>
-                    <telerik:CandlestickSeries.DataPoints>
-                        <telerikcharting:OhlcDataPoint Category="Monday" Open="5" Close="4" Low="2" High="10" />
-                        <telerikcharting:OhlcDataPoint Category="Tuesday" Open="10" Close="8" Low="7" High="12"/>
-                        <telerikcharting:OhlcDataPoint Category="Wednesday" Open="6" Close="8" Low="5" High="9"/>
-                        <telerikcharting:OhlcDataPoint Category="Thursday" Open="3" Close="7" Low="3" High="8"/>
-                        <telerikcharting:OhlcDataPoint Category="Friday" Open="5" Close="6" Low="4" High="7"/>
-                    </telerik:CandlestickSeries.DataPoints>
-                </telerik:CandlestickSeries>
-            </telerik:RadCartesianChart.Series>
-        </telerik:RadCartesianChart>
-
-    </SplitView>
+    <Grid>
+        <SplitView x:Name="mainSplitView" DisplayMode="CompactInline" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" CompactPaneLength="54" OpenPaneLength="120" IsPaneOpen="{x:Bind ViewModel.IsMenuPaneOpen, Mode=OneWay}">
+            <SplitView.Pane>
+                <ListBox Name="IconsLIstBox" SelectionMode="Single">
+                    <ListBoxItem Name="HomeListItem">
+                        <Button x:Name="menuButton" Command="{x:Bind ViewModel.MenuToggleCommand}" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" Foreground="White">
+                            <Button.Content>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="" FontSize="20"/>
+                            </Button.Content>
+                        </Button>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <Button x:Name="chartButton" Command="{x:Bind ViewModel.NavigateToChartPageCommand}" Background="Transparent" BorderThickness="0" Height="48" VerticalAlignment="Center" Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE9D2;" FontSize="20"/>
+                                <TextBlock Text="Chart" VerticalAlignment="Center" Margin="16,0,0,0"></TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <Button x:Name="tableButton" Command="{x:Bind ViewModel.NavigateToGridViewPageCommand}" Background="Transparent" BorderThickness="0" Height="48" VerticalAlignment="Center" Foreground="White">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xF0E2;" FontSize="20"/>
+                                <TextBlock Text="Table" VerticalAlignment="Center" Margin="16,0,0,0"></TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </ListBoxItem>
+                </ListBox>
+            </SplitView.Pane>
+            <Frame x:Name="mainFrame"/>
+        </SplitView>
+    </Grid>
 </Page>

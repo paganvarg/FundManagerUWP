@@ -119,10 +119,25 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Core\Commands\RelayCommand.cs" />
+    <Compile Include="Core\ObservableBase.cs" />
+    <Compile Include="Helpers\FundDataImporter.cs" />
+    <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Fund.cs" />
+    <Compile Include="Models\FundData.cs" />
+    <Compile Include="Models\Quote.cs" />
+    <Compile Include="Pages\ChartPage.xaml.cs">
+      <DependentUpon>ChartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\GridViewPage.xaml.cs">
+      <DependentUpon>GridViewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\MainPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -148,15 +163,49 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Pages\ChartPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\GridViewPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Commands.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Telerik.UI.for.UniversalWindowsPlatform">
       <Version>1.0.1.8</Version>
     </PackageReference>
+    <PackageReference Include="Trady.Analysis">
+      <Version>3.2.8</Version>
+    </PackageReference>
+    <PackageReference Include="Trady.Core">
+      <Version>3.2.9</Version>
+    </PackageReference>
+    <PackageReference Include="Trady.Importer">
+      <Version>3.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Trady.Importer.Stooq">
+      <Version>3.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="Trady.Importer.Yahoo">
+      <Version>3.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="YahooFinanceApi">
+      <Version>2.1.2</Version>
+    </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -12,33 +12,28 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using FundManagerUWP.Helpers;
-using FundManagerUWP.Pages;
 using FundManagerUWP.ViewModels;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace FundManagerUWP
+namespace FundManagerUWP.Pages
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class ChartPage : Page
     {
-        public MainPage()
+        public MainPageViewModel ViewModel { get; set; }
+
+        public ChartPage()
         {
             InitializeComponent();
-            this.Loaded += OnLoaded;
-            ViewModel = new MainPageViewModel();
-            this.DataContext = ViewModel;
-            NavigationHelper.Initialise(mainFrame);
         }
 
-        public MainPageViewModel ViewModel { get; private set; }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            NavigationHelper.NavigateToPage(typeof(ChartPage));
+            ViewModel = DataContext as MainPageViewModel;
+            base.OnNavigatedTo(e);
         }
     }
 }
