@@ -21,9 +21,7 @@ namespace FundManagerUWP.ViewModels
 {
     public class MainPageViewModel : ObservableBase
     {
-        private const int NumberOfDays = 100;
-
-        public readonly Fund[] Funds = new Fund[]
+        public readonly Fund[] Funds = new[]
         {
             new Fund("GB00B4R9F681", "BlackRock Emerging Markets D Acc", false, "GB00B4R9F681.L"),
             new Fund("GB00B5STJW84", "Jupiter European I Acc", true, "0P0000U20D.L"),
@@ -86,26 +84,14 @@ namespace FundManagerUWP.ViewModels
             set => SetProperty(ref _chartData, value);
         }
 
-        private ObservableCollection<FundData> _fundData;
-        public ObservableCollection<FundData> FundData
-        {
-            get => _fundData;
-            set => SetProperty(ref _fundData, value);
-        }
+        public ObservableCollection<FundData> FundData { get; private set; }
 
         public async Task LoadFundData()
         {
-            if (_fundData.Count == 0)
+            if (FundData.Count == 0)
             {
-                await FundDataImporter.PopulateCollectionWithFundData(Funds, _fundData);
+                await FundDataImporter.PopulateCollectionWithFundData(Funds, FundData);
             }
         }
-        //public async Task ImportFundDetails()
-        //{
-        //    //var importer = new YahooFinanceImporter();
-        //    //var candles = await importer.ImportAsync(Funds[1].YahooCode, DateTime.Now.Subtract(TimeSpan.FromDays(100)));
-        //    //var fundsDetails = await Yahoo.GetHistoricalAsync(Funds[0],
-        //    //    DateTime.Now.Subtract(TimeSpan.FromDays(NumberOfDays)), DateTime.Now);
-        //}
     }
 }

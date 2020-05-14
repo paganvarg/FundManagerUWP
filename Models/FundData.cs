@@ -15,5 +15,7 @@ namespace FundManagerUWP.Models
         public double TwoHundredDayAverage { get; set; }
         public double FiftyTwoWeekHigh { get; set; }
         public double FiftyTwoWeekLow { get; set; }
+        public string YahooSymbol { get; set; }
+        public string Isin { get; set; }
     }
 }
