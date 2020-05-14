@@ -10,21 +10,56 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <GridView>
-            <GridView.HeaderTemplate>
+        <ListView ItemsSource="{x:Bind ViewModel.FundData, Mode=OneWay}" Margin="10">
+            <ListView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="5*"/>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
+                        <TextBlock Text="Name" Grid.Column="0" FontSize="20"/>
+                        <TextBlock Text="Price" Grid.Column="1" FontSize="20"/>
+                        <TextBlock Text="50-day avg" Grid.Column="2" FontSize="20"/>
+                        <TextBlock Text="200-day avg" Grid.Column="3" FontSize="20"/>
+                        <TextBlock Text="52-week high" Grid.Column="4" FontSize="20"/>
+                        <TextBlock Text="52-week low" Grid.Column="5" FontSize="20"/>
+                        <TextBlock Text="Market" Grid.Column="6" FontSize="20"/>
                     </Grid>
                 </DataTemplate>
-    </GridView.HeaderTemplate>
-            <GridView.ItemTemplate>
+            </ListView.HeaderTemplate>
+            <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:FundData">
-                    <StackPanel></StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{x:Bind LongName}" Grid.Column="0" FontSize="20"/>
+                        <TextBlock Text="{x:Bind RegularMarketPrice}" Grid.Column="1" FontSize="20"/>
+                        <TextBlock Text="{x:Bind FiftyDayAverage}" Grid.Column="2" FontSize="20"/>
+                        <TextBlock Text="{x:Bind TwoHundredDayAverage}" Grid.Column="3" FontSize="20"/>
+                        <TextBlock Text="{x:Bind FiftyTwoWeekHigh}" Grid.Column="4" FontSize="20"/>
+                        <TextBlock Text="{x:Bind FiftyTwoWeekLow}" Grid.Column="5" FontSize="20"/>
+                        <TextBlock Text="{x:Bind Market}" Grid.Column="6" FontSize="20"/>
+                    </Grid>
                 </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+            </ListView.ItemTemplate>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </Page>

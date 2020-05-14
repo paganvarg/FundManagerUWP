@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,6 +58,7 @@ namespace FundManagerUWP.ViewModels
         public MainPageViewModel()
         {
             FundNames = Funds.Select(f => f.Name).OrderBy(x => x).ToList();
+            FundData = new ObservableCollection<FundData>();
         }
 
         private bool _isMenuPaneOpen;
@@ -77,12 +79,27 @@ namespace FundManagerUWP.ViewModels
         public ICommand GetChartDataForFund => new RelayCommand<string>(async (fundSymbol) => ChartData = await FundDataImporter.GetFundHistoricalData(fundSymbol));
 
         private IReadOnlyList<IOhlcv> _chartData;
+
         public IReadOnlyList<IOhlcv> ChartData
         {
             get => _chartData;
             set => SetProperty(ref _chartData, value);
         }
 
+        private ObservableCollection<FundData> _fundData;
+        public ObservableCollection<FundData> FundData
+        {
+            get => _fundData;
+            set => SetProperty(ref _fundData, value);
+        }
+
+        public async Task LoadFundData()
+        {
+            if (_fundData.Count == 0)
+            {
+                await FundDataImporter.PopulateCollectionWithFundData(Funds, _fundData);
+            }
+        }
         //public async Task ImportFundDetails()
         //{
         //    //var importer = new YahooFinanceImporter();

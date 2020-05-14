@@ -28,9 +28,10 @@ namespace FundManagerUWP.Pages
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel = DataContext as MainPageViewModel;
+            await ViewModel.LoadFundData();
             base.OnNavigatedTo(e);
         }
 

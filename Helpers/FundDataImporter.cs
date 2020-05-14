@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,23 +16,31 @@ namespace FundManagerUWP.Helpers
     {
         private const int ChartInterval = 500;
 
-        public static async Task<IList<FundData>> GetFundData(IList<Fund> funds)
+        public static async Task<bool> PopulateCollectionWithFundData(IList<Fund> funds, ObservableCollection<FundData> collection)
         {
-            var results = await Yahoo.Symbols(funds.Select(f => f.YahooCode).ToArray()).Fields(Field.TwoHundredDayAverage,
-                Field.LongName, Field.FiftyDayAverage, Field.RegularMarketPrice,
-                Field.FiftyTwoWeekHigh, Field.FiftyTwoWeekLow, Field.FiftyTwoWeekHighChangePercent, Field.FiftyTwoWeekLowChangePercent,
-                Field.Market).QueryAsync();
-
-            return results.Select(x => x.Value).Select(x => new FundData()
+            foreach (var fund in funds)
             {
-                LongName = x.LongName,
-                Market = x.Market,
-                RegularMarketPrice = x.RegularMarketPrice,
-                TwoHundredDayAverage = x.TwoHundredDayAverage,
-                FiftyDayAverage = x.FiftyDayAverage,
-                FiftyTwoWeekHigh = x.FiftyTwoWeekHigh,
-                FiftyTwoWeekLow = x.FiftyTwoWeekLow
-            }).ToList();
+                var results = await Yahoo.Symbols(fund.YahooCode).Fields(Field.TwoHundredDayAverage,
+                    Field.LongName, Field.FiftyDayAverage, Field.RegularMarketPrice,
+                    Field.FiftyTwoWeekHigh, Field.FiftyTwoWeekLow, Field.FiftyTwoWeekHighChangePercent, Field.FiftyTwoWeekLowChangePercent,
+                    Field.Market).QueryAsync();
+
+                var security = results.First().Value;
+
+                collection.Add(new FundData()
+                {
+                    LongName = TryGetObject(() => security.LongName),
+                    Market = TryGetObject(() => security.Market),
+                    RegularMarketPrice = TryGetObject(() => security.RegularMarketPrice),
+                    TwoHundredDayAverage = TryGetObject(() => security.TwoHundredDayAverage),
+                    FiftyDayAverage = TryGetObject(() => security.FiftyDayAverage),
+                    FiftyTwoWeekHigh = TryGetObject(() => security.FiftyTwoWeekHigh),
+                    FiftyTwoWeekLow = TryGetObject(() => security.FiftyTwoWeekLow)
+                });
+
+            }
+
+            return true;
         }
 
         public static async Task<IReadOnlyList<IOhlcv>> GetFundHistoricalData(string symbol)
@@ -50,6 +59,18 @@ namespace FundManagerUWP.Helpers
             catch (Exception)
             {
                 return new List<IOhlcv>();
+            }
+        }
+
+        public static T TryGetObject<T>(Func<T> objectRetrievalFunc)
+        {
+            try
+            {
+                return objectRetrievalFunc();
+            }
+            catch (Exception)
+            {
+                return default(T);
             }
         }
     }
