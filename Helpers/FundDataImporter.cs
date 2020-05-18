@@ -23,12 +23,12 @@ namespace FundManagerUWP.Helpers
                 var results = await Yahoo.Symbols(fund.YahooCode).Fields(Field.TwoHundredDayAverage,
                     Field.LongName, Field.FiftyDayAverage, Field.RegularMarketPrice,
                     Field.FiftyTwoWeekHigh, Field.FiftyTwoWeekLow, Field.FiftyTwoWeekHighChangePercent, Field.FiftyTwoWeekLowChangePercent,
-                    Field.Market, Field.Symbol).QueryAsync();
+                    Field.Market, Field.Symbol, Field.RegularMarketChangePercent).QueryAsync();
 
                 var security = results.First().Value;
 
                 var yahooSymbol = TryGetObject(() => security.Symbol);
-                collection.Add(new FundData()
+                var fundData = new FundData()
                 {
                     LongName = TryGetObject(() => security.LongName),
                     Market = TryGetObject(() => security.Market),
@@ -37,10 +37,19 @@ namespace FundManagerUWP.Helpers
                     FiftyDayAverage = TryGetObject(() => security.FiftyDayAverage),
                     FiftyTwoWeekHigh = TryGetObject(() => security.FiftyTwoWeekHigh),
                     FiftyTwoWeekLow = TryGetObject(() => security.FiftyTwoWeekLow),
+                    RegularMarketChangePercent = TryGetObject(() => security.RegularMarketChangePercent),
                     YahooSymbol = yahooSymbol,
                     Isin = funds.FirstOrDefault(x => StringComparer.InvariantCultureIgnoreCase.Equals(x.YahooCode, yahooSymbol))?.Isin
-                });
+                };
 
+                var i = 0;
+                while (i < collection.Count &&
+                       collection[i].PercentageDropFromWeeksHigh >= fundData.PercentageDropFromWeeksHigh)
+                {
+                    i++;
+                }
+
+                collection.Insert(i, fundData);
             }
 
             return true;

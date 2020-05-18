@@ -21,8 +21,7 @@ namespace FundManagerUWP.ViewModels
 {
     public class MainPageViewModel : ObservableBase
     {
-        public readonly Fund[] Funds = new[]
-        {
+        public readonly Fund[] Funds = {
             new Fund("GB00B4R9F681", "BlackRock Emerging Markets D Acc", false, "GB00B4R9F681.L"),
             new Fund("GB00B5STJW84", "Jupiter European I Acc", true, "0P0000U20D.L"),
             new Fund("GB00B3LRRF45", "Jupiter UK Smaller Companies Fund I", true, "0P0000X1GJ.L"),
@@ -84,7 +83,7 @@ namespace FundManagerUWP.ViewModels
             set => SetProperty(ref _chartData, value);
         }
 
-        public ObservableCollection<FundData> FundData { get; private set; }
+        public ObservableCollection<FundData> FundData { get; }
 
         public async Task LoadFundData()
         {
