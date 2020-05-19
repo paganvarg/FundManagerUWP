@@ -33,6 +33,12 @@ namespace FundManagerUWP.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel = DataContext as MainPageViewModel;
+            if (e.Parameter is string fundYahooCode)
+            {
+                ViewModel.SelectedFund = fundYahooCode;
+                ViewModel.GetChartDataForFund.Execute(fundYahooCode);
+            }
+
             base.OnNavigatedTo(e);
         }
     }

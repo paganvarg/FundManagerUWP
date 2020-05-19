@@ -14,6 +14,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using FundManagerUWP.Helpers;
+using FundManagerUWP.Pages;
+using ProtocolActivatedEventArgs = Windows.ApplicationModel.Activation.ProtocolActivatedEventArgs;
 
 namespace FundManagerUWP
 {
@@ -30,6 +33,15 @@ namespace FundManagerUWP
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            if (args.Kind == ActivationKind.Protocol)
+            {
+                var protocolEventArgs = args as ProtocolActivatedEventArgs;
+                NavigationHelper.NavigateToPage(typeof(ChartPage), protocolEventArgs?.Uri.AbsolutePath);
+            }
         }
 
         /// <summary>

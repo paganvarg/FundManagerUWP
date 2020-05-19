@@ -129,14 +129,10 @@
     </Compile>
     <Compile Include="Core\Commands\RelayCommand.cs" />
     <Compile Include="Core\ObservableBase.cs" />
-    <Compile Include="Helpers\FundDataImporter.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Fund.cs" />
-    <Compile Include="Models\FundData.cs" />
-    <Compile Include="Models\Quote.cs" />
     <Compile Include="Pages\ChartPage.xaml.cs">
       <DependentUpon>ChartPage.xaml</DependentUpon>
     </Compile>
@@ -213,7 +209,16 @@
       <Version>2.1.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FundManagerCore\FundManagerCore.csproj">
+      <Project>{87e6cdd9-2882-4312-bbcd-78922b93094e}</Project>
+      <Name>FundManagerCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FundManagerServices\FundManagerServices.csproj">
+      <Project>{d1840bb5-d7af-4caf-adec-3607567cd13f}</Project>
+      <Name>FundManagerServices</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
