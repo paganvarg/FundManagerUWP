@@ -72,7 +72,7 @@ namespace FundManagerUWP.ViewModels
         {
             if (FundData.Count == 0)
             {
-                await FundDataImporter.PopulateCollectionWithFundData(Fund.AllFunds, FundData);
+                await FundDataImporter.PopulateCollectionWithFundData(Fund.AllFunds, FundData, () => false);
             }
         }
     }

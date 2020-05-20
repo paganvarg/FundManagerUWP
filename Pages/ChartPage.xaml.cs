@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using FundManagerCore.Models.Args;
 using FundManagerUWP.ViewModels;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -33,8 +34,9 @@ namespace FundManagerUWP.Pages
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel = DataContext as MainPageViewModel;
-            if (e.Parameter is string fundYahooCode)
+            if (e.Parameter is ChartPageArgs chartPageArgs)
             {
+                var fundYahooCode = chartPageArgs.YahooCode;
                 ViewModel.SelectedFund = fundYahooCode;
                 ViewModel.GetChartDataForFund.Execute(fundYahooCode);
             }

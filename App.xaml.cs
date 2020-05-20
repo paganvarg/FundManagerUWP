@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Web;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Background;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -14,6 +16,9 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using FundManagerCore.Helpers;
+using FundManagerCore.Models.Args;
+using FundManagerServices;
 using FundManagerUWP.Helpers;
 using FundManagerUWP.Pages;
 using ProtocolActivatedEventArgs = Windows.ApplicationModel.Activation.ProtocolActivatedEventArgs;
@@ -37,10 +42,31 @@ namespace FundManagerUWP
 
         protected override void OnActivated(IActivatedEventArgs args)
         {
-            if (args.Kind == ActivationKind.Protocol)
+            var rootFrame = GetRootFrame(args);
+            ChartPageArgs chartPageArgs = null;
+            if (args is ProtocolActivatedEventArgs protocolEventArgs)
             {
-                var protocolEventArgs = args as ProtocolActivatedEventArgs;
-                NavigationHelper.NavigateToPage(typeof(ChartPage), protocolEventArgs?.Uri.AbsolutePath);
+                var yahooCode = protocolEventArgs?.Uri.AbsolutePath;
+                chartPageArgs = new ChartPageArgs(yahooCode);
+
+            }
+            else if (args is ToastNotificationActivatedEventArgs toastNotificationEventArgs)
+            {
+                var notificationArgs = HttpUtility.ParseQueryString(toastNotificationEventArgs.Argument);
+                if (notificationArgs[ToastContentHelper.Action] == ToastContentHelper.ShowFundAction)
+                {
+                    chartPageArgs = new ChartPageArgs(notificationArgs[ToastContentHelper.FundYahooCode]);
+                }
+            }
+
+            if (rootFrame.Content == null)
+            {
+                rootFrame.Navigate(typeof(MainPage), chartPageArgs);
+                Window.Current.Activate();
+            }
+            else
+            {
+                NavigationHelper.NavigateToPage(typeof(ChartPage), chartPageArgs);
             }
         }
 
@@ -49,7 +75,35 @@ namespace FundManagerUWP
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            var rootFrame = GetRootFrame(e);
+            if (!e.PrelaunchActivated)
+            {
+                bool canEnablePrelaunch = Windows.Foundation.Metadata.ApiInformation.IsMethodPresent("Windows.ApplicationModel.Core.CoreApplication", "EnablePrelaunch");
+                if (canEnablePrelaunch)
+                {
+                    Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
+                }
+
+                if (rootFrame.Content == null)
+                {
+                    // When the navigation stack isn't restored navigate to the first page,
+                    // configuring the new page by passing required information as a navigation
+                    // parameter
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                }
+
+                var appTrigger = new TimeTrigger((uint)TimeSpan.FromHours(12).TotalMinutes, false);
+                BackgroundTaskRegistrationHelper.RegisterBackgroundTask(typeof(FundsChangeAnalysisService),
+                    nameof(FundsChangeAnalysisService), appTrigger, null);
+
+                // Ensure the current window is active
+                Window.Current.Activate();
+            }
+        }
+
+        private Frame GetRootFrame(IActivatedEventArgs arguments)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -62,7 +116,7 @@ namespace FundManagerUWP
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                if (arguments.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
                 }
@@ -71,18 +125,7 @@ namespace FundManagerUWP
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
-            }
+            return rootFrame;
         }
 
         /// <summary>

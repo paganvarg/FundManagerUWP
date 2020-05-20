@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Core\Commands\RelayCommand.cs" />
     <Compile Include="Core\ObservableBase.cs" />
+    <Compile Include="Helpers\BackgroundTaskRegistrationHelper.cs" />
     <Compile Include="Helpers\NavigationHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

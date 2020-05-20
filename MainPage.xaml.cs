@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using FundManagerCore.Models.Args;
 using FundManagerUWP.Helpers;
 using FundManagerUWP.Pages;
 using FundManagerUWP.ViewModels;
@@ -25,6 +26,8 @@ namespace FundManagerUWP
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private ChartPageArgs _chartPageArgs;
+
         public MainPage()
         {
             InitializeComponent();
@@ -36,9 +39,14 @@ namespace FundManagerUWP
 
         public MainPageViewModel ViewModel { get; private set; }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _chartPageArgs = e.Parameter as ChartPageArgs;
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            NavigationHelper.NavigateToPage(typeof(ChartPage));
+            NavigationHelper.NavigateToPage(typeof(ChartPage), _chartPageArgs);
         }
     }
 }
