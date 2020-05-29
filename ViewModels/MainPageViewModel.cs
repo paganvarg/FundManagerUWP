@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FundManagerCore.Helpers;
 using FundManagerCore.Models;
+using FundManagerCore.Models.Args;
 using FundManagerUWP.Core;
 using FundManagerUWP.Core.Commands;
 using FundManagerUWP.Helpers;
@@ -52,7 +53,7 @@ namespace FundManagerUWP.ViewModels
 
         public ICommand MenuToggleCommand => new RelayCommand(() => IsMenuPaneOpen = !IsMenuPaneOpen);
 
-        public ICommand NavigateToChartPageCommand => new RelayCommand(() => NavigationHelper.NavigateToPage(typeof(ChartPage)));
+        public ICommand NavigateToChartPageCommand => new RelayCommand<FundData>((fundData) => NavigationHelper.NavigateToPage(typeof(ChartPage), (fundData != null) ? new ChartPageArgs(fundData.YahooSymbol) : null));
 
         public ICommand NavigateToGridViewPageCommand => new RelayCommand(() => NavigationHelper.NavigateToPage(typeof(GridViewPage)));
 
